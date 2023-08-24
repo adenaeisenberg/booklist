@@ -92,7 +92,7 @@ namespace "/api/v1" do
     end
   end
 
-  patch "/books/:id " do |id|
+  patch "/books/:id" do |id|
     book = Book.where(id: id).first
     halt(404, { message: "Book Not Found" }.to_json) unless book
     if book.update_attributes(json_params)
@@ -101,5 +101,11 @@ namespace "/api/v1" do
       status 422
       body BookSerializer.new(book).to_json
     end
+  end
+
+  delete "/books/:id" do |id|
+    book = Book.where(id: id).first
+    book.destroy if book
+    status 204
   end
 end
